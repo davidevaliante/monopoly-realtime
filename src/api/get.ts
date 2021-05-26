@@ -1,10 +1,16 @@
 import { MonopolySpin, SpinModel } from '../mongoose-models/monopoly/Spin'
 import { CrazyTimeStats, SymbolStats } from '../mongoose-models/monopoly/Stats'
 import { CrazyTimeSymbol } from '../mongoose-models/monopoly/Symbols'
+import { MonopolyTableModel } from '../mongoose-models/Tables'
 
 export const getLatestSpins = async (count : number) => {
     const allSpins = await SpinModel.find().limit(count).sort({'timeOfSpin' : -1})
     return allSpins
+}
+
+export const getLatestTable = async () => {
+    const table = await MonopolyTableModel.find().limit(1).sort({'time' : -1})
+    return table
 }
 
 export const getStatsInTheLastHours = async (hoursToCheck : number) => {

@@ -2,7 +2,8 @@ import express, { Response, Request } from 'express'
 import { SpinModel } from '../mongoose-models/monopoly/Spin'
 import { MonopolySpin } from '../mongoose-models/monopoly/Spin';
 const router = express.Router()
-import { getInitialPageData, getLatestSpins, getStatsInTheLastHours } from './get'
+import { getInitialPageData, getLatestSpins, getLatestTable, getStatsInTheLastHours } from './get'
+import { MonopolyTable, MonopolyTableModel } from './../mongoose-models/Tables';
 
 router.post('/write-spins', async (request : Request, response : Response) => {
     try{
@@ -23,6 +24,47 @@ router.post('/write-spins', async (request : Request, response : Response) => {
         response.send({error : e})
     }
 })
+
+router.post('/write-table', async (request : Request, response : Response) => {
+    try{
+        const list = request.body
+        console.log(list)
+
+        const time = new Date().getTime()
+
+        const low = list.find(it => it.type === 'low')
+        const mid = list.find(it => it.type === 'low')
+        const high = list.find(it => it.type === 'low')
+
+        const newTable = {
+            _id : `${time}_table`,
+            time : time,
+            lowTierTable : low,
+            midTierTable : mid,
+            highTierTable : high
+        }
+
+        const insertNew = await MonopolyTableModel.create(newTable)
+
+        response.send({
+            inserted : newTable,
+        })
+    }catch(e){
+        response.send({error : e})
+    }
+})
+
+router.get('/latest-table', async (request : Request, response : Response) => {
+    try {
+        const latestTable = await getLatestTable()
+        response.send({
+            latestTable
+        })
+    } catch (error) {
+        response.send({ error })
+    }
+})
+
 
 router.get('/get-all', async (request : Request, response : Response) => {
     const allSpins = await SpinModel.find()
