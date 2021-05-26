@@ -113,9 +113,9 @@ router.get('/delete-all', async (request : Request, response : Response) => {
 router.get('/data-for-the-last-hours/:hours', async (request : Request, response : Response) => {
     try {
         const { hours } = request.params
-        const {stats, spinsInTimeFrame} = await getInitialPageData(parseInt(hours))
+        const {tables, spinsInTimeFrame} = await getInitialPageData(parseInt(hours))
         response.send({
-            stats,
+            tables,
             spinsInTimeFrame
         })
     } catch (error) {

@@ -6,9 +6,7 @@ import { createServer } from "http"
 import { Server, Socket } from "socket.io"
 import cors from 'cors'
 import cron from 'node-cron'
-import bodyParser from 'body-parser'
-import { SpinModel } from './mongoose-models/monopoly/Spin'
-import { getLatestSpins, getStatsInTheLastHours } from './api/get'
+import { getLatestTable, getStatsInTheLastHours } from './api/get'
 import { TimeFrame, timeFrameValueToHours } from './models/TimeFrame'
 
 dotenv.config()
@@ -64,12 +62,12 @@ io.on('connection', (socket: Socket) => {
 
 Object.values(TimeFrame).forEach(tf => {
     cron.schedule('*/5 * * * * *', async () => {
-        const spins = await getLatestSpins(25)
+        const tables = await getLatestTable()
         const stats = await getStatsInTheLastHours(timeFrameValueToHours(tf))
 
         io.to(tf).emit(tf, {
             timeFrame : tf,
-            spins,
+            tables,
             stats
         })
     })

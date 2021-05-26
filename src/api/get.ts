@@ -64,32 +64,16 @@ export const getInitialPageData = async (hoursToCheck : number) => {
 
     const spinsInTimeFrame = await SpinModel.find({timeOfSpin:{$gte:timeSince}}, ).sort({'timeOfSpin' : -1}) as MonopolySpin[]
 
+    const tables = await MonopolyTableModel.find().limit(1).sort({'time' : -1})
 
     // const queryEnd = new Date().getTime()
 
-    const totalSpins = spinsInTimeFrame.length
+    // const totalSpins = spinsInTimeFrame.length
 
     // console.log(`Query took ${queryEnd - queryStart} to execute for ${totalSpins}`)
 
-    
-    const stats = new CrazyTimeStats(
-        timeSince,
-        totalSpins,
-        Object.values(CrazyTimeSymbol).filter(it => typeof(it) !== 'number').map((symbol : CrazyTimeSymbol) => {
-
-            const timeSince = spinsInTimeFrame.map(s => s.spinResultSymbol).indexOf(symbol.toString())
-            
-            return new SymbolStats(
-                symbol,
-                spinsInTimeFrame.filter(it => it.spinResultSymbol === symbol.toString()).length * 100 / totalSpins,
-                timeSince != -1 ? timeSince : totalSpins,
-                spinsInTimeFrame.filter(it => it.spinResultSymbol === symbol.toString()).length
-            )
-        })
-    )
-
     return {
-        stats,
+        tables,
         spinsInTimeFrame
     }
 }
