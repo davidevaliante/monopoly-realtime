@@ -6,7 +6,7 @@ import { createServer } from "http"
 import { Server, Socket } from "socket.io"
 import cors from 'cors'
 import cron from 'node-cron'
-import { getLatestTable, getStatsInTheLastHours } from './api/get'
+import { getLatestSpins, getLatestTable, getStatsInTheLastHours } from './api/get'
 import { TimeFrame, timeFrameValueToHours } from './models/TimeFrame'
 
 dotenv.config()
@@ -64,6 +64,7 @@ Object.values(TimeFrame).forEach(tf => {
     cron.schedule('*/5 * * * * *', async () => {
         const tables = await getLatestTable()
         const stats = await getStatsInTheLastHours(timeFrameValueToHours(tf))
+        const spins = await getLatestSpins(25)
 
         io.to(tf).emit(tf, {
             timeFrame : tf,
