@@ -1,4 +1,4 @@
-import { CrazyTimeSymbol } from './Symbols'
+import { MonopolySymbol } from './Symbols'
 
 export class CrazyTimeStats {
     constructor(
@@ -10,7 +10,7 @@ export class CrazyTimeStats {
 
 export class SymbolStats {
     constructor(
-        public symbol : CrazyTimeSymbol, 
+        public symbol : MonopolySymbol, 
         public percentage : number,
         public spinSince : number,
         public lands : number

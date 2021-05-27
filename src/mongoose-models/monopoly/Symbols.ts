@@ -1,10 +1,9 @@
-export enum CrazyTimeSymbol{
+export enum MonopolySymbol{
     one,
     two,
     five,
     ten,
-    cashhunt,
-    pachinko,
-    coinflip,
-    crazytime
+    tworolls,
+    fourrolls,
+    chance,
 }
