@@ -69,6 +69,7 @@ Object.values(TimeFrame).forEach(tf => {
         io.to(tf).emit(tf, {
             timeFrame : tf,
             tables,
+            spins,
             stats
         })
     })
