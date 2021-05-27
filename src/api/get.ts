@@ -66,6 +66,8 @@ export const getInitialPageData = async (hoursToCheck : number) => {
 
     const tables = await MonopolyTableModel.find().limit(1).sort({'time' : -1})
 
+    const stats = await getStatsInTheLastHours(hoursToCheck)
+
     // const queryEnd = new Date().getTime()
 
     // const totalSpins = spinsInTimeFrame.length
@@ -73,6 +75,7 @@ export const getInitialPageData = async (hoursToCheck : number) => {
     // console.log(`Query took ${queryEnd - queryStart} to execute for ${totalSpins}`)
 
     return {
+        stats,
         tables,
         spinsInTimeFrame
     }
